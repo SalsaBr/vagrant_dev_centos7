@@ -1,0 +1,17 @@
+---
+- hosts: all
+  vars:
+    user: vagrant
+
+  become: true
+  remote_user: root
+
+  tasks:
+    - name: install latest git.x86_64
+      yum: name=git state=latest
+
+    - name: setup git username
+      shell: git config --global user.name "SalsaBr"
+
+    - name: setup git email
+      git config --global user.email "durieux_br@yahoo.com.br"
