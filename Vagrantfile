@@ -12,7 +12,9 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "centos/7"
+  #config.vm.box = "centos/7"
+  config.vm.box = "openlogic/rockylinux-8"
+
   # config.ssh.private_key_path = "c:\\Users\\Salsa\\.ssh\\id_rsa"
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   #config.vm.synced_folder ".", "/home/vagrant/sync", disabled: true
@@ -78,7 +80,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: 
     "sudo yum install -y epel-release; 
     sudo yum install -y ansible;
-    mount -t vboxsf -o uid=`id -u vagrant`,gid=`id -g vagrant` vagrant /vagrant"
+    mount -t vboxfs -o uid=`id -u vagrant`,gid=`id -g vagrant` vagrant /vagrant"
  
   config.vm.provision "ansible_local" do |ansible|
     ansible.verbose = true
