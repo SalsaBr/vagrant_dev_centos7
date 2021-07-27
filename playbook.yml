@@ -11,7 +11,36 @@
       yum: name=git state=latest
 
     - name: setup git username
-      shell: git config --global user.name "username"
+      become_user: vagrant
+      shell: git config --global user.name ""
 
     - name: setup git email
-      git config --global user.email "email"
+      become_user: vagrant
+      shell: git config --global user.email ""
+
+    #- name: Check file
+    #  become_user: vagrant
+    #  file:
+    #    path: terraform_1.0.3_linux_amd64.zip
+
+    - name: Download terraform
+      #shell: wget https://releases.hashicorp.com/terraform/1.0.3/terraform_1.0.3_linux_amd64.zip
+      get_url: 
+        url: https://releases.hashicorp.com/terraform/1.0.3/terraform_1.0.3_linux_amd64.zip
+        dest: terraform_1.0.3_linux_amd64.zip
+
+    - name: create terraform dir
+      become_user: vagrant
+      ansible.builtin.file:
+        path: ~/terraform
+        state: directory
+
+    - name: unzip terraform
+      become_user: vagrant
+      ansible.builtin.unarchive:
+        src: terraform_1.0.3_linux_amd64.zip
+        dest: ~/terraform/
+
+    - name: Add to PATH
+      become_user: vagrant
+      shell: echo 'export PATH="$PATH:$HOME/terraform"' >> ~/.profile
